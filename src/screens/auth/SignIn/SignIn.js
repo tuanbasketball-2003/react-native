@@ -8,32 +8,37 @@ import Button from '../../../components/Button/button'
 import Seperator from '../../../components/Seperator/Seperator'
 import GoogleLogin from '../../../components/GoogleLogin/GoogleLogin'
 
-const SignUp = () => {
+const SignIn = () => {
 
     const [checked, setChecked] = useState(false)
-    const onSingIn = () => {
-        console.log('sign in')
+    const onSingup = () => {
+        console.log('Xin chao')
+
     }
     return (
 
         <ScrollView style={styles.container}>
             <AuthHeader title={'Sign Up'} />
+            <Input label='Name' placeholder="Jone Name" />
             <Input label='E-mail' placeholder="example@gmail.com" />
             <Input isPassword label='Password' placeholder="************" />
 
-
+            <View style={styles.agrreRow}>
+                <CheckBox checked={checked} onCheck={setChecked} />
+                <Text style={styles.agrreText}>I agree with <Text style={styles.agrreTextBold}>Terms </Text>&<Text style={styles.agrreTextBold}> Privacy</Text> </Text>
+            </View>
             <Button style={styles.button} title='Sign Up' />
             <Seperator text='Or sign up with' />
 
             <GoogleLogin />
-            <Text style={styles.footerText}>Don’t have an account?
-                <Text onPress={onSingIn} style={styles.footerLink}> Sign Up</Text>
+            <Text style={styles.footerText}>Already have an account?
+                <Text onPress={onSingup} style={styles.footerLink}> Sign In</Text>
             </Text>
         </ScrollView>
     )
 }
 
-export default React.memo(SignUp)
+export default React.memo(SignIn)
 
 const styles = StyleSheet.create({
 

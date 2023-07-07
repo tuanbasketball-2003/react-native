@@ -5469,6 +5469,11 @@
     "jscodeshift" "^0.11.0"
     "nullthrows" "^1.1.1"
 
+"react-native-config@^1.5.1":
+  "integrity" "sha512-g1xNgt1tV95FCX+iWz6YJonxXkQX0GdD3fB8xQtR1GUBEqweB9zMROW77gi2TygmYmUkBI7LU4pES+zcTyK4HA=="
+  "resolved" "https://registry.npmjs.org/react-native-config/-/react-native-config-1.5.1.tgz"
+  "version" "1.5.1"
+
 "react-native@0.67.5":
   "integrity" "sha512-/xEksthqImZGDfcqzEmbOw0KRkp9/x+cC8T8uTHhSKLLa8pOFLGdF190UOjnLammGmAmFy0+ZcJf0Ujm53IGeA=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.67.5.tgz"
