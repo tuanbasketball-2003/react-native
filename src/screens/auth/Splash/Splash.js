@@ -3,7 +3,13 @@ import React from 'react'
 import Button from '../../../components/Button/button'
 import { colors } from '../../../utils/color'
 
-const Splash = () => {
+const Splash = ({ navigation }) => {
+    const onSingup = () => {
+        navigation.navigate('SignUp')
+    }
+    const onSingin = () => {
+        navigation.navigate('SignIn')
+    }
     return (
         <View style={styles.container}>
             <Image resizeMode='contain' style={styles.image} source={require('../../../assets/splash_image.png')} />
@@ -12,18 +18,21 @@ const Splash = () => {
                 <Text style={[styles.title, styles.innerText]}> All you need </Text>
                 <Text style={styles.title}> here!!</Text>
             </View>
-            <Button
-                title='Sign Up'
-            />
+            <View style={styles.buttonContainer}>
+                <Button onPress={onSingup}
+                    title='Sign Up'
+                />
+            </View>
 
-            <Pressable hitSlop={20}>
+
+            <Pressable onPress={onSingin} hitSlop={20}>
                 <Text style={styles.footerText}>Sing In</Text>
             </Pressable>
         </View>
     )
 }
 
-export default Splash
+export default React.memo(Splash)
 
 const styles = StyleSheet.create({
     container: {
@@ -49,6 +58,10 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: 200
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        width: '100%'
     },
     footerText: {
         color: colors.blue,

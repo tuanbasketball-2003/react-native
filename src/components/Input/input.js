@@ -2,7 +2,7 @@ import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 import React, { useState } from 'react'
 import { colors } from '../../utils/color'
 
-const Input = ({ placeholder, label, isPassword }) => {
+const Input = ({ placeholder, label, isPassword, value, onChangeText }) => {
 
     const [isPasswordVisible, setIsPassWordVisible] = useState(false)
 
@@ -13,7 +13,7 @@ const Input = ({ placeholder, label, isPassword }) => {
         <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
             <View style={styles.inputContainer}>
-                <TextInput secureTextEntry={isPassword && !isPasswordVisible} placeholder={placeholder} style={styles.input} />
+                <TextInput value={value} onChangeText={onChangeText} secureTextEntry={isPassword && !isPasswordVisible} placeholder={placeholder} style={styles.input} />
                 {isPassword ? (
                     <Pressable onPress={onEyePress}>
                         <Image style={{ marginHorizontal: 16 }} source={isPasswordVisible ? require('../../assets/eye.png') : require('../../assets/eye_close.png')} />

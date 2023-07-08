@@ -8,31 +8,29 @@ import Button from '../../../components/Button/button'
 import Seperator from '../../../components/Seperator/Seperator'
 import GoogleLogin from '../../../components/GoogleLogin/GoogleLogin'
 
-const SignIn = () => {
-
-    const [checked, setChecked] = useState(false)
+const SignIn = ({ navigation }) => {
+    console.log(navigation);
     const onSingup = () => {
-        console.log('Xin chao')
+        navigation.navigate('SignUp')
+    }
 
+    const onBack = () => {
+        navigation.goBack();
     }
     return (
 
         <ScrollView style={styles.container}>
-            <AuthHeader title={'Sign Up'} />
-            <Input label='Name' placeholder="Jone Name" />
+            <AuthHeader onBackPress={onBack} title={'Sign Up'} />
             <Input label='E-mail' placeholder="example@gmail.com" />
             <Input isPassword label='Password' placeholder="************" />
 
-            <View style={styles.agrreRow}>
-                <CheckBox checked={checked} onCheck={setChecked} />
-                <Text style={styles.agrreText}>I agree with <Text style={styles.agrreTextBold}>Terms </Text>&<Text style={styles.agrreTextBold}> Privacy</Text> </Text>
-            </View>
+
             <Button style={styles.button} title='Sign Up' />
             <Seperator text='Or sign up with' />
 
             <GoogleLogin />
-            <Text style={styles.footerText}>Already have an account?
-                <Text onPress={onSingup} style={styles.footerLink}> Sign In</Text>
+            <Text style={styles.footerText}>Don’t have an account?
+                <Text onPress={onSingup} style={styles.footerLink}> Sign Up</Text>
             </Text>
         </ScrollView>
     )
