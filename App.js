@@ -15,6 +15,7 @@ import { Image } from 'react-native';
 import ProductDetail from './src/screens/app/ProductDetail/ProductDetail';
 import Setting from './src/screens/app/Settings/Setting';
 import CreateListin from './src/screens/app/CreateListin/CreateListin';
+import MyListings from './src/screens/app/MyListings/MyListings';
 
 const WEB_CLIENT_ID = '214531408203-eapfobjh5ju1ut11m80na9q5vtdhk99t.apps.googleusercontent.com';
 const IOS_CLIENT_ID = '214531408203-23rjb0nsphmveakpfh9himagnrie0cce.apps.googleusercontent.com';
@@ -29,6 +30,7 @@ const ProfileStack = () => {
       <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
       <Stack.Screen name='Settings' component={Setting} options={{ headerShown: false }} />
       <Stack.Screen name='CreateListing' component={CreateListin} options={{ headerShown: false }} />
+      <Stack.Screen name='MyListings' component={MyListings} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }

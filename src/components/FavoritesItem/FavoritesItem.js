@@ -4,7 +4,7 @@ import { colors } from '../../utils/color'
 
 const { width } = Dimensions.get('window')
 // console.log("CHeck width ", width);
-const FavoritesItem = ({ title, onPress, image, price }) => {
+const FavoritesItem = ({ title, onPress, icon, image, price }) => {
     return (
         <Pressable onPress={onPress} style={styles.container}>
 
@@ -13,7 +13,9 @@ const FavoritesItem = ({ title, onPress, image, price }) => {
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.price}>{price}</Text>
             </View>
-            <Image style={styles.icon} source={require('../../assets/close.png')} />
+
+            <Image style={styles.icon} source={icon || require('../../assets/close.png')} />
+
         </Pressable>
     )
 }
