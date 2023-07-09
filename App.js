@@ -13,6 +13,8 @@ import Profile from './src/screens/app/Profile/Profile';
 import Favorites from './src/screens/app/Favorites/Favorites';
 import { Image } from 'react-native';
 import ProductDetail from './src/screens/app/ProductDetail/ProductDetail';
+import Setting from './src/screens/app/Settings/Setting';
+import CreateListin from './src/screens/app/CreateListin/CreateListin';
 
 const WEB_CLIENT_ID = '214531408203-eapfobjh5ju1ut11m80na9q5vtdhk99t.apps.googleusercontent.com';
 const IOS_CLIENT_ID = '214531408203-23rjb0nsphmveakpfh9himagnrie0cce.apps.googleusercontent.com';
@@ -20,6 +22,16 @@ const IOS_CLIENT_ID = '214531408203-23rjb0nsphmveakpfh9himagnrie0cce.apps.google
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }} />
+      <Stack.Screen name='Settings' component={Setting} options={{ headerShown: false }} />
+      <Stack.Screen name='CreateListing' component={CreateListin} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  )
+}
 
 const Tabs = () => (
   <Tab.Navigator screenOptions={({ route }) => ({
@@ -30,7 +42,7 @@ const Tabs = () => (
         icon = focused
           ? require('./src/assets/tabs/home_active.png')
           : require('./src/assets/tabs/home.png');
-      } else if (route.name === 'Profile') {
+      } else if (route.name === 'ProfileStack') {
         icon = focused
           ? require('./src/assets/tabs/profile_active.png')
           : require('./src/assets/tabs/profile.png');
@@ -50,7 +62,7 @@ const Tabs = () => (
   })}>
     <Tab.Screen name='Home' component={Home} />
     <Tab.Screen name='Favorite' component={Favorites} />
-    <Tab.Screen name='Profile' component={Profile} />
+    <Tab.Screen name='ProfileStack' component={ProfileStack} />
   </Tab.Navigator>
 )
 
