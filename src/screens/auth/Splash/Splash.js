@@ -2,8 +2,11 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Button from '../../../components/Button/button'
 import { colors } from '../../../utils/color'
+import { UserContext } from '../../../../App'
 
 const Splash = ({ navigation }) => {
+
+
     const onSingup = () => {
         navigation.navigate('SignUp')
     }
@@ -68,6 +71,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 16,
         fontWeight: 'bold',
-        marginTop: 30
+        marginTop: 25
     }
 })

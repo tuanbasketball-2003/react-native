@@ -10,11 +10,13 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.19.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "axios": "^1.4.0",
     "react": "17.0.2",
     "react-native": "0.67.5",
     "react-native-config": "^1.5.1",
