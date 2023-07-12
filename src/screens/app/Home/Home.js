@@ -1,43 +1,77 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../../components/Header/Header'
 import { categories } from '../../../data/categories'
 import CategoryBox from '../../../components/CategoryBox/CategoryBox'
-import { products } from '../../../data/products'
 import ProductHomeItem from '../../../components/ProductHomeItem/ProductHomeItem'
+import { getServices } from '../../../utils/backedCalls'
+import { ServicesContext } from '../../../../App'
+import { colors } from '../../../utils/color'
 
 const Home = ({ navigation }) => {
 
-    const [selectorCategory, setSelectorCategory] = useState();
-    const [searchKeyWord, setSearchKeyWord] = useState();
-    // console.log("Check searchKeyWord >>>", searchKeyWord);
+    const [selectedCategory, setSelectedCategory] = useState();
+    const [keyword, setKeyword] = useState();
+    const [filteredProducts, setFilteredProducts] = useState(services);
 
-    const [filteredProducts, setFilteredProducts] = useState(products)
+    // useEffect(() => {
+    //     (async () => {
+    //         const data = await getServices();
+    //         console.log("Check data>>>", data);
+    //         setServices(data);
+    //     })
+    // }, [])
+    const { services, setServices } = useContext(ServicesContext);
+    console.log("Services>>>>", services);
+    useEffect(() => {
+        (async () => {
+            const data = await getServices();
+            setServices(data);
+            // console.log('Log data home >>>>', data);
+        })()
+    }, [])
+
 
     useEffect(() => {
-        if (selectorCategory && !searchKeyWord) {
-            const updatedProducts = products.filter((product) => product.category === selectorCategory);
+        if (selectedCategory && !keyword) {
+            const updatedProducts = services.filter((product) => String(product?.category) === String(selectedCategory));
             setFilteredProducts(updatedProducts);
-        } else if (selectorCategory && searchKeyWord) {
-            const updatedProducts = products.filter((product) => product.category === selectorCategory && product.title.toLocaleLowerCase().includes(searchKeyWord.toLocaleLowerCase()));
+        } else if (selectedCategory && keyword) {
+            const updatedProducts = services.filter((product) => String(product?.category) === String(selectedCategory) && product?.title?.toLowerCase().includes(keyword?.toLowerCase()));
             setFilteredProducts(updatedProducts);
-        } else if (!selectorCategory && searchKeyWord) {
-            const updatedProducts = products.filter((product) => product.title.toLocaleLowerCase().includes(searchKeyWord.toLocaleLowerCase()));
+        } else if (!selectedCategory && keyword) {
+            const updatedProducts = services.filter((product) => product?.title?.toLowerCase().includes(keyword?.toLowerCase()));
             setFilteredProducts(updatedProducts);
-        } else if (!selectorCategory && !searchKeyWord) {
-            setFilteredProducts(products)
+        } else if (!keyword && !selectedCategory) {
+            setFilteredProducts(services);
         }
-    }, [selectorCategory, searchKeyWord])
+    }, [selectedCategory, keyword, services])
+
+    // useEffect(() => {
+    //     if (selectorCategory && !searchKeyWord) {
+    //         const updatedProducts = services.filter((product) => String(product?.category) === String(selectorCategory));
+    //         setFilteredProducts(updatedProducts);
+    //     } else if (selectorCategory && searchKeyWord) {
+    //         const updatedProducts = services.filter((product) => String(product?.category) === String(selectorCategory) && product?.title?.toLocaleLowerCase().includes(searchKeyWord.toLocaleLowerCase()));
+    //         setFilteredProducts(updatedProducts);
+    //     } else if (!selectorCategory && searchKeyWord) {
+    //         const updatedProducts = services.filter((product) => product?.title?.toLocaleLowerCase().includes(searchKeyWord.toLocaleLowerCase()));
+    //         setFilteredProducts(updatedProducts);
+    //     } else if (!selectorCategory && !searchKeyWord) {
+    //         setFilteredProducts(services)
+    //     }
+    // }, [selectorCategory, searchKeyWord, services])
 
     const renderCategoryItem = ({ index, item }) => {
 
         return (
             <CategoryBox
-                onPress={() => setSelectorCategory(item.id)}
-                isSelected={item.id === selectorCategory}
+                onPress={() => setSelectedCategory(item?.id)}
+                isSelected={item?.id === setSelectedCategory}
                 isFirst={index === 0}
-                title={item.title} image={item.image}
+                title={item?.title}
+                image={item?.image}
             />
         )
     }
@@ -56,7 +90,7 @@ const Home = ({ navigation }) => {
     return (
         <SafeAreaView>
             {/* <ScrollView style={styles.container}> */}
-            <Header showSearch onSearch={setSearchKeyWord} keyword={searchKeyWord} title='Find All You Need' />
+            <Header showSearch onSearch={setKeyword} keyword={keyword} title='Find All You Need' />
 
             {/* {FlatList thể loại} */}
             <FlatList style={styles.list}
@@ -70,7 +104,7 @@ const Home = ({ navigation }) => {
                 style={styles.productList}
                 numColumns={2} data={filteredProducts}
                 renderItem={renderProductItem}
-                keyExtractor={(item) => String(item.id)}
+                keyExtractor={(item) => String(item._id)}
                 ListFooterComponent={<View style={{ height: 200 }} />}
             />
             {/* </ScrollView> */}
@@ -88,6 +122,6 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
     },
     productList: {
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
     }
 })

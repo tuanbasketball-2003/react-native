@@ -1,23 +1,28 @@
 import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../../components/Header/Header'
 import ListItem from '../../../components/ListItem/ListItem'
 import { colors } from '../../../utils/color'
 import EditableBox from '../../../components/EditableBox/EdittableBox'
 import Button from '../../../components/Button/button'
+import { ProfileContext } from '../../../../App'
+import { updateProfile } from '../../../utils/backedCalls'
 
 const Setting = ({ navigation }) => {
 
     const [editing, setEditing] = useState(false);
-    const [values, setValues] = useState({ name: 'User', email: 'nguyenductuanff2003@gmail.com' })
+    const { profile, setProfile } = useContext(ProfileContext)
+    const [values, setValues] = useState({ _id: profile?.id, fullName: profile?.fullName, email: profile?.email });
     const onEditPress = () => {
         setEditing(true);
     }
-    const onSave = () => {
+    const onSave = async () => {
+        const updatedProfile = await updateProfile(values);
+        setProfile(updatedProfile)
         setEditing(false);
     }
-
+    // console.log("Check values Setting >>>", values);
     const onChange = (key, value) => {
         // key : name  and email
         //value : name : User, email :abc @gmai.com
@@ -25,7 +30,7 @@ const Setting = ({ navigation }) => {
         setValues(v => ({ ...v, [key]: value }))
         console.log("Check key", key);
     }
-    console.log("Check values >>>>", values);
+    // console.log("Check values >>>>", values);
 
     const onItemPress = () => {
         Linking.openURL('https://google.com')
@@ -44,7 +49,7 @@ const Setting = ({ navigation }) => {
                         <Image style={styles.icon} source={require('../../../assets/edit.png')} />
                     </Pressable>
                 </View>
-                <EditableBox label="Name" onChangeText={(v) => onChange("name", v)} value={values.name} editable={editing} />
+                <EditableBox label="Name" onChangeText={(v) => onChange("fullName", v)} value={values.fullName} editable={editing} />
                 <EditableBox label="Email" onChangeText={(v) => onChange("email", v)} value={values.email} editable={editing} />
                 {editing ? (
                     <Button style={styles.button} onPress={onSave} title="Save" />

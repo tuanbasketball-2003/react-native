@@ -1,5 +1,5 @@
 import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../../components/Header/Header'
 import { colors } from '../../../utils/color'
@@ -7,14 +7,17 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import Input from '../../../components/Input/input'
 import { categories } from '../../../data/categories'
 import Button from '../../../components/Button/button'
+import { addService } from '../../../utils/backedCalls'
+import { ServicesContext } from '../../../../App'
 
 const CreateListin = ({ navigation }) => {
 
     const [images, setImages] = useState([]);
     const [values, setValues] = useState({});
     const [loading, setLoading] = useState(false)
+    const { setServices } = useContext(ServicesContext);
 
-    console.log('Check Values createListin', values)
+    // console.log('Check Values createListin', values)
 
     const goBack = () => {
         navigation.goBack()
@@ -36,10 +39,32 @@ const CreateListin = ({ navigation }) => {
             return filterImages;
         })
     }
-
     const onChange = (value, key) => {
-        setValues((val) => ({ ...val, [key]: value }))
+        setValues((val) => ({ ...val, [key]: value }));
     }
+
+    console.log("Values >>>", values);
+    const onSubmit = async () => {
+        const img = images?.length ? images[0] : null;
+        console.log("Image>>", img);
+        const data = {
+            ...values,
+            category: values.category?.id,
+        };
+
+        if (img) {
+            data['image'] = {
+                uri: img?.uri,
+                name: img?.fileName,
+                type: img?.type,
+            }
+        }
+        const updatedServices = await addService(data);
+        setServices(updatedServices);
+        setValues({});
+        navigation.navigate('MyListings');
+    }
+
 
     return (
         <SafeAreaView>
@@ -75,7 +100,7 @@ const CreateListin = ({ navigation }) => {
 
 
                 </KeyboardAvoidingView>
-                <Button title="Submit" style={styles.button} />
+                <Button onPress={onSubmit} title="Submit" style={styles.button} />
             </ScrollView>
         </SafeAreaView>
     )

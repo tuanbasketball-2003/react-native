@@ -1,13 +1,25 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../../components/Header/Header'
 import { colors } from '../../../utils/color'
 import ListItem from '../../../components/ListItem/ListItem'
 import Button from '../../../components/Button/button'
+import { getProfile } from '../../../utils/backedCalls'
+import { ProfileContext } from '../../../../App'
 
 const Profile = ({ navigation }) => {
     const number = 10;
+    const { profile, setProfile } = useContext(ProfileContext)
+    console.log(">>>>> profile", profile);
+    useEffect(() => {
+        (async () => {
+
+            const data = await getProfile();
+            console.log("Check profile>>>>", data);
+            setProfile(data)
+        })()
+    }, [])
 
     const onLogout = () => {
         console.log('Log out clicked')
@@ -31,8 +43,8 @@ const Profile = ({ navigation }) => {
             <Header title="Profile" showLogout onLogout={onLogout} />
             <View style={styles.container}>
                 <View style={styles.content}>
-                    <Text style={styles.name}>User name</Text>
-                    <Text style={styles.email}>User email</Text>
+                    <Text style={styles.name}>{profile?.fullName}</Text>
+                    <Text style={styles.email}>{profile?.email}</Text>
 
                     <ListItem onPress={onMyListingPress} title="My Listings" subtitle={`Already have ${number} listing`} />
                     <ListItem onPress={onSettingsPress} title="Settings" subtitle="Account, FAQ, Contact" />

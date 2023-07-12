@@ -7,9 +7,13 @@ const WEB_CLIENT_ID = '214531408203-eapfobjh5ju1ut11m80na9q5vtdhk99t.apps.google
 const IOS_CLIENT_ID = '214531408203-23rjb0nsphmveakpfh9himagnrie0cce.apps.googleusercontent.com';
 
 export const UserContext = React.createContext();
+export const ProfileContext = React.createContext();
+export const ServicesContext = React.createContext([]);
 
 const App = () => {
   const [user, setUser] = useState();
+  const [profile, setProfile] = useState();
+  const [services, setServices] = useState();
 
   console.log('user app state>>>>', user)
   useEffect(() => {
@@ -26,7 +30,11 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <UserContext.Provider value={{ user, setUser }}>
-        <Routes />
+        <ProfileContext.Provider value={{ profile, setProfile }}>
+          <ServicesContext.Provider value={{ services, setServices }}>
+            <Routes />
+          </ServicesContext.Provider>
+        </ProfileContext.Provider>
       </UserContext.Provider>
     </SafeAreaProvider>
 

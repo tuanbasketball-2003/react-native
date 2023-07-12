@@ -1,17 +1,21 @@
 import { ScrollView, StyleSheet, Text, View, Image, Dimensions, Pressable, Linking } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '../../../utils/color'
 import Button from '../../../components/Button/button';
 import ImageCarousel from '../../../components/ImageCarousel/ImageCarousel';
+import { updateServices } from '../../../utils/backedCalls';
+import { ServicesContext } from '../../../../App';
 
 const { height } = Dimensions.get('window');
 
 const ProductDetail = ({ navigation, route }) => {
     // console.log(' Check navigation >>> ProductDetails', navigation)
     // console.log('Check route >>> ProductDetails', route)
+    const params = route.params || {};
+    const { services, setServices } = useContext(ServicesContext);
 
-    const { product } = route.params || {};
+    const product = services?.find(service => service?._id === params?.product?._id);
     // console.log('Check product details ', product)
 
     const onBackPress = () => {
@@ -28,6 +32,13 @@ const ProductDetail = ({ navigation, route }) => {
         // Linking.openURL(`email: ${email}`)
     }
 
+    const onBookmark = async () => {
+        const data = await updateServices(product?._id, { liked: true });
+        console.log('Data ProductDetails ', data)
+        setServices(data)
+    }
+    console.log('products >>>>>', product)
+
     return (
         <SafeAreaView style={styles.safe}>
             <ScrollView style={styles.container}>
@@ -35,11 +46,11 @@ const ProductDetail = ({ navigation, route }) => {
                     <ImageCarousel images={product?.images} />
                 ) : (
 
-                    <Image style={styles.image} source={{ uri: product.image }} />
+                    <Image style={styles.image} source={{ uri: `https://listicle.deegeehub.com/api/${product.image?.path}` }} />
                 )}
                 <View style={styles.content}>
                     <Text style={styles.title}>{product.title}</Text>
-                    <Text style={styles.price}>{product.price}</Text>
+                    <Text style={styles.price}>${product.price}</Text>
                     <Text style={styles.description}>{product.description}</Text>
                 </View>
                 <Pressable onPress={onBackPress} style={styles.backContainer} >
@@ -47,8 +58,8 @@ const ProductDetail = ({ navigation, route }) => {
                 </Pressable>
             </ScrollView>
             <View style={styles.footer}>
-                <Pressable style={styles.bookmarkContainer} >
-                    <Image style={styles.bookmarkIcon} source={require('../../../assets/bookmark_blue.png')} />
+                <Pressable onPress={onBookmark} style={styles.bookmarkContainer} >
+                    <Image style={styles.bookmarkIcon} source={product?.liked ? require('../../../assets/bookmark_filled.png') : require('../../../assets/bookmark_blue.png')} />
                 </Pressable>
                 <Button onPress={onContact} title="Contact Seller" />
             </View>
@@ -68,6 +79,7 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: height * 0.45,
+        backgroundColor: colors.lightGrey
     },
     content: {
         backgroundColor: colors.white,

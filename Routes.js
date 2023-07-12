@@ -16,6 +16,7 @@ import CreateListin from './src/screens/app/CreateListin/CreateListin';
 import MyListings from './src/screens/app/MyListings/MyListings';
 import { UserContext } from './App';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addTokenToAxios } from './src/utils/request';
 
 
 const Stack = createNativeStackNavigator();
@@ -66,22 +67,36 @@ const Tabs = () => (
 )
 
 const Route = () => {
+    const [loading, setLoading] = useState(true);
     const { user, setUser } = useContext(UserContext);
     // console.log("Check user routes context >>>>>", user);
 
     useEffect(() => {
         (async () => {
-            // console.log("Hello");
             const token = await AsyncStorage.getItem('auth_token');
-            // console.log("Token >>>>", token);
-            setUser({ token })
+            setUser({ token });
+
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
         })()
     }, [])
 
+
+    useEffect(() => {
+        if (user?.token) {
+            addTokenToAxios(user?.token);
+        }
+    }, [user])
+
     const theme = {
         colors: {
-            background: colors.white
+            background: colors.white,
         }
+    }
+
+    if (loading) {
+        return null;
     }
     // Khắc phục sự cố khu vực an toàn dùng : SafeAreaProvider của react-navigation-safe-area 
     return (

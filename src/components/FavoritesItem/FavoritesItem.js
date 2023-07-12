@@ -4,17 +4,18 @@ import { colors } from '../../utils/color'
 
 const { width } = Dimensions.get('window')
 // console.log("CHeck width ", width);
-const FavoritesItem = ({ title, onPress, icon, image, price }) => {
+const FavoritesItem = ({ title, onPress, icon, image, price, onIconPress }) => {
     return (
         <Pressable onPress={onPress} style={styles.container}>
 
-            <Image style={styles.image} source={{ uri: image }} />
+            <Image style={styles.image} source={{ uri: `https://listicle.deegeehub.com/api/${image?.path}` }} />
             <View style={styles.content}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.price}>{price}</Text>
             </View>
-
-            <Image style={styles.icon} source={icon || require('../../assets/close.png')} />
+            <Pressable onPress={onIconPress}>
+                <Image style={styles.icon} source={icon || require('../../assets/close.png')} />
+            </Pressable>
 
         </Pressable>
     )
@@ -35,7 +36,8 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 8,
-        marginRight: 20
+        marginRight: 20,
+        backgroundColor: colors.lightGrey
     },
     content: {
         flex: 1
